@@ -17,9 +17,49 @@ function createCommandChoices() {
   return commandChoices;
 }
 
-const CHAT_GPT_COMMAND = {
+const JOIN_CHANNEL_COMMAND = {
+  name: 'join',
+  description: 'join the voice channel',
+  type: 1,
+  integration_types: [0, 1],
+  contexts: [0, 1, 2],
+  options: [
+    {
+      name: 'channel',
+      type: 3, // Type 3 stands for STRING (as per Discord API standards)
+      description: 'The channel you want me to join',
+      required: true,
+    },
+  ],
+};
+
+const LEAVE_CHANNEL_COMMAND = {
+  name: 'leave',
+  description: 'leave the voice channel',
+  type: 1,
+  integration_types: [0, 1],
+  contexts: [0, 1, 2],
+};
+
+const PLAY_AUDIO_COMMAND = {
+  name: 'play',
+  description: 'play the music',
+  type: 1,
+  integration_types: [0, 1],
+  contexts: [0, 1, 2],
+  options: [
+    {
+      name: 'youtubelink',
+      type: 3, // Type 3 stands for STRING (as per Discord API standards)
+      description: 'The music you want me to play',
+      required: true,
+    },
+  ],
+};
+
+const GEMINI_ASK_COMMAND = {
   name: 'ask',
-  description: 'Ask chatgpt a question',
+  description: 'Ask chat a question',
   type: 1,
   integration_types: [0, 1],
   contexts: [0, 1, 2],
@@ -31,7 +71,7 @@ const CHAT_GPT_COMMAND = {
       required: true,
     },
   ],
-}
+};
 
 // Simple test command
 const TEST_COMMAND = {
@@ -60,6 +100,6 @@ const CHALLENGE_COMMAND = {
   contexts: [0, 2],
 };
 
-const ALL_COMMANDS = [TEST_COMMAND, CHALLENGE_COMMAND, CHAT_GPT_COMMAND];
+const ALL_COMMANDS = [TEST_COMMAND, CHALLENGE_COMMAND,JOIN_CHANNEL_COMMAND,LEAVE_CHANNEL_COMMAND, PLAY_AUDIO_COMMAND, GEMINI_ASK_COMMAND];
 
 InstallGlobalCommands(process.env.APP_ID, ALL_COMMANDS);

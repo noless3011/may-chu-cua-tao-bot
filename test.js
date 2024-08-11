@@ -1,17 +1,16 @@
-import 'dotenv/config';
-import { GoogleGenerativeAI } from "@google/generative-ai";
 
-// Access your API key as an environment variable (see "Set up your API key" above)
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_KEY);
+import ytdl from'@distube/ytdl-core';
+import fs from'fs';
 
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash"});
 
-async function run(prompt) {
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    const text = response.text();
-    return text;
-  }
-  
-  var response = await run("Tell me a story about a wolf lonely in the jungle");
-  console.log(response);
+
+const videoID = await ytdl.getVideoID(
+  "https://www.youtube.com/watch?v=a59gmGkq_pw"
+);
+let info = await ytdl.getInfo(videoID);
+let audioFormats = ytdl.filterFormats(info.formats, "audioonly");
+const format = ytdl.chooseFormat(audioFormats, { quality: "highestaudio" });
+const fileName = `video.${format.container}`;
+await ytdl
+  .downloadFromInfo(info, { format })
+  .pipe(fs.createWriteStream(fileName));
